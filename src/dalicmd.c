@@ -20,6 +20,10 @@ int main(int argc, char** argv) {
 //	libusb_set_debug(ctx, LIBUSB_LOG_LEVEL_DEBUG);
 	libusb_device_handle* dev = NULL;
 	dev = libusb_open_device_with_vid_pid(ctx, _VID, _PID);
+	if(dev == NULL) {
+		printf("opening device... %s\n", strerror(errno));
+		exit(1);
+	}
 	err = libusb_set_auto_detach_kernel_driver(dev, 1);
 	if (err < 0) {
 		printf("interrupt_transfer... %s\n", strerror(errno));
