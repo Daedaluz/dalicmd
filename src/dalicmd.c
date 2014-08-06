@@ -11,7 +11,7 @@ static const int _PID = 0x0802;
 
 int main(int argc, char** argv) {
 	int err;
-	if ( argc < 3 ) {
+	if ( argc < 3 || strlen(argv[1]) < 2) {
 		printf("usage: dalicmd <g|s><c|d> <address> <command or direct control>\n");
 		exit(0);
 	}
@@ -31,11 +31,6 @@ int main(int argc, char** argv) {
 		exit(1);
 	}
 	uint8_t command[2] = {0, 0};
-
-	if(strlen(argv[1]) < 2) {
-		printf("usage: dalicmd <g|s><c|d> <address> <command or direct control>\n");
-		exit(0);
-	}
 	
 	switch(argv[1][0]) {
 		case 'g':
