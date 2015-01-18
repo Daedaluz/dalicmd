@@ -132,7 +132,8 @@ int main(int argc, char** argv) {
 				loopcount++;
 				printf("debug: read %d bytes\n", nw);
 			}
-			printf("RESULT: %.2X %.2X\n", result[0], result[1]);
+			if(result[0] != 0)
+				printf("RESULT: %.2X %.2X\n", result[0], result[1]);
 		}
 	}
 	libusb_release_interface(dev, 0);
