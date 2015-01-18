@@ -122,6 +122,23 @@ int main(int argc, char** argv) {
 			err = libusb_interrupt_transfer(dev, 0x81, result, 20, &nw, timeout);
 			if(err) {
 				printf("read interrupt_transfer... %s\n", strerror(errno));
+				switch(err) {
+					case LIBUSB_ERROR_TIMEOUT:
+						printf("timed out!\n");
+						break;
+					case LIBUSB_ERROR_PIPE:
+						printf("pipe\n");
+						break;
+					case LIBUSB_ERROR_OVERFLOW:
+						printf("overflowed\n");
+						break;
+					case LIBUSB_ERROR_NO_DEVICE:
+						printf("no device\n");
+						break;
+					default:
+						printf("unknown error\n");
+						break;
+				}
 				libusb_release_interface(dev, 0);
 				libusb_close(dev);
 				libusb_exit(ctx);
