@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
 				exit(1);
 			}
 			loopcount++;
-			usleep(50000);
+			usleep(150000);
 		}
 		if(result[0] != 0)
 			printf("RESULT: %.2X %.2X\n", result[0], result[1]);
