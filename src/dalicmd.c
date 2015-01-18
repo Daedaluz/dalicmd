@@ -117,6 +117,7 @@ int main(int argc, char** argv) {
 	if(should_read){
 		while(1){
 			int loopcount = 0;
+			result[0] = 0;
 			usleep(timeout*1000);
 			while(result[0] == 0 && loopcount < 45){
 				err = libusb_interrupt_transfer(dev, 0x81, result, 20, &nw, timeout);
