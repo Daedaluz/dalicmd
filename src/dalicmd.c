@@ -21,7 +21,7 @@ static struct option longopts[] = {
 	{"address", required_argument, 0, 'a'},
 	{"set", required_argument, 0, 's'},
 	{"cmd", required_argument, 0, 'c'},
-	{"read", optional_argument, 0, 'r'},
+	{"read", required_argument, 0, 'r'},
 	{"help", no_argument, 0, 'h'},
 	{0, 0, 0, 0}
 };
@@ -31,7 +31,7 @@ static void printhelp() {
 		   "--address        -a xx\n"
 		   "--set            -s xx\n"
 		   "--cmd            -c xx\n"
-		   "--read[=timeout] -t[=timeout]\n"
+		   "--read           -r xx\n"
 		   "--help           -h\n");
 	exit(1);
 	return;
