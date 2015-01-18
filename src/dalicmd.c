@@ -68,6 +68,7 @@ static void parse_args(int argc, char** argv) {
 				break;
 			case 't':
 				timeout = strtol(optarg, NULL, 0);
+				break;
 			case '?':
 			default:
 				printhelp();
