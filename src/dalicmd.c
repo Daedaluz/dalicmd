@@ -54,12 +54,12 @@ static void parse_args(int argc, char** argv) {
 				command[0] |= (tmp << 1);
 				break;
 			case 'c':
-				tmp = strtol(optarg, NULL, 0) & 0x3F;
+				tmp = strtol(optarg, NULL, 0);
 				command[0] |= 0x01;
 				command[1] = (uint8_t)(tmp & 0xFF);
 				break;
 			case 's':
-				tmp = strtol(optarg, NULL, 0) & 0x3F;
+				tmp = strtol(optarg, NULL, 0);
 				command[0] &= 0xfe;
 				command[1] = (uint8_t)(tmp & 0xFF);
 				break;
