@@ -38,7 +38,7 @@ static void printhelp() {
 static void parse_args(int argc, char** argv) {
 	while(1) {
 		int optindex;
-		int c = getopt_long(argc, argv, "g:a:c:s:h", longopts, &optindex);
+		int c = getopt_long(argc, argv, "g:a:c:s:t:h", longopts, &optindex);
 		long tmp = 0;
 		if(c == -1)
 			break;
