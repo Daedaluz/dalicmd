@@ -115,30 +115,28 @@ int main(int argc, char** argv) {
 	}
 	nw = 0;
 	if(should_read){
-		while(1){
-			int loopcount = 0;
-			result[0] = 0;
-			usleep(timeout*1000);
-			while(result[0] == 0 && loopcount < 45){
-				err = libusb_interrupt_transfer(dev, 0x81, result, 20, &nw, timeout);
-				usleep(50000);
-				if(err) {
-					printf("read interrupt_transfer... %s\n", strerror(errno));
-					libusb_release_interface(dev, 0);
-					libusb_close(dev);
-					libusb_exit(ctx);
-					exit(1);
-				}
-				loopcount++;
-				printf("debug: read %d bytes\n", nw);
+		int loopcount = 0;
+		result[0] = 0;
+		usleep(timeout*1000);
+		while(result[0] == 0 && loopcount < 45){
+			err = libusb_interrupt_transfer(dev, 0x81, result, 20, &nw, timeout);
+			if(err) {
+				printf("read interrupt_transfer... %s\n", strerror(errno));
+				libusb_release_interface(dev, 0);
+				libusb_close(dev);
+				libusb_exit(ctx);
+				exit(1);
 			}
-			if(result[0] != 0)
-				printf("RESULT: %.2X %.2X\n", result[0], result[1]);
+			loopcount++;
+			usleep(50000);
 		}
+		if(result[0] != 0)
+			printf("RESULT: %.2X %.2X\n", result[0], result[1]);
 	}
 	libusb_release_interface(dev, 0);
 	libusb_close(dev);
 	libusb_exit(ctx);
+	return 0;
 }
 
 
