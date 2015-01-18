@@ -116,6 +116,7 @@ int main(int argc, char** argv) {
 	nw = 0;
 	if(should_read){
 		while(1){
+			int loopcount = 0;
 			usleep(timeout*1000);
 			while(result[0] == 0 && loopcount < 45){
 				err = libusb_interrupt_transfer(dev, 0x81, result, 20, &nw, timeout);
@@ -127,6 +128,7 @@ int main(int argc, char** argv) {
 					libusb_exit(ctx);
 					exit(1);
 				}
+				loopcount++
 				printf("debug: read %d bytes\n", nw);
 			}
 			printf("RESULT: %.2X %.2X\n", result[0], result[1]);
