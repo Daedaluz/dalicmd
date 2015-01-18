@@ -12,25 +12,27 @@ static const int _PID = 0x0802;
 static uint8_t command[2] = {0, 0};
 static uint8_t result[2] = { 0, 0 };
 
-static int timeout = 0;
+static int should_read = 0;
+
+static int timeout = 200;
 
 static struct option longopts[] = {
 	{"group", required_argument, 0, 'g'},
 	{"address", required_argument, 0, 'a'},
 	{"set", required_argument, 0, 's'},
 	{"cmd", required_argument, 0, 'c'},
-	{"timeout", required_argument, 0, 't'},
+	{"read", optional_argument, 0, 'r'},
 	{"help", no_argument, 0, 'h'},
 	{0, 0, 0, 0}
 };
 
 static void printhelp() {
-	printf("--group    -g xx\n"
-		   "--address  -a xx\n"
-		   "--set      -s xx\n"
-		   "--cmd      -c xx\n"
-		   "--timeout  -t xx\n"
-		   "--help     -h   \n");
+	printf("--group          -g xx\n"
+		   "--address        -a xx\n"
+		   "--set            -s xx\n"
+		   "--cmd            -c xx\n"
+		   "--read[=timeout] -t[=timeout]\n"
+		   "--help           -h\n");
 	exit(1);
 	return;
 }
@@ -38,7 +40,7 @@ static void printhelp() {
 static void parse_args(int argc, char** argv) {
 	while(1) {
 		int optindex;
-		int c = getopt_long(argc, argv, "g:a:c:s:t:h", longopts, &optindex);
+		int c = getopt_long(argc, argv, "g:a:c:s:r:h", longopts, &optindex);
 		long tmp = 0;
 		if(c == -1)
 			break;
@@ -66,8 +68,11 @@ static void parse_args(int argc, char** argv) {
 			case 'h':
 				printhelp();
 				break;
-			case 't':
-				timeout = strtol(optarg, NULL, 0);
+			case 'r':
+				if(optarg)
+					timeout = strtol(optarg, NULL, 0);
+				should_read = 1;
+				printf("setting timeout to: %d\n", timeout);
 				break;
 			case '?':
 			default:
@@ -108,10 +113,21 @@ int main(int argc, char** argv) {
 		printf("interrupt_transfer... %s\n", strerror(errno));
 		exit(1);
 	}
-
-	err = libusb_interrupt_transfer(dev, 0x81, result, 2, &nw, timeout);
-	printf("RESULT: %.2X %.2X\n", result[0], result[1]);
-
+	nw = 0;
+	if(should_read){
+		while(nw == 0){
+			err = libusb_interrupt_transfer(dev, 0x81, result, 2, &nw, timeout);
+			if(err) {
+				printf("read interrupt_transfer... %s\n", strerror(errno));
+				libusb_release_interface(dev, 0);
+				libusb_close(dev);
+				libusb_exit(ctx);
+				exit(1);
+			}
+			printf("debug: read %d bytes\n", nw);
+		}
+		printf("RESULT: %.2X %.2X\n", result[0], result[1]);
+	}
 	libusb_release_interface(dev, 0);
 	libusb_close(dev);
 	libusb_exit(ctx);
