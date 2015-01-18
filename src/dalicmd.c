@@ -115,6 +115,7 @@ int main(int argc, char** argv) {
 	}
 	nw = 0;
 	if(should_read){
+		usleep(timeout*1000);
 		while(nw == 0){
 			err = libusb_interrupt_transfer(dev, 0x81, result, 20, &nw, timeout);
 			if(err) {
