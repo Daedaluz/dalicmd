@@ -10,7 +10,7 @@
 static const int _VID = 0x04CC;
 static const int _PID = 0x0802;
 static uint8_t command[2] = {0, 0};
-static uint8_t result[2] = { 0, 0 };
+static uint8_t result[20] = { 0, 0 };
 
 static int should_read = 0;
 
@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
 	nw = 0;
 	if(should_read){
 		while(nw == 0){
-			err = libusb_interrupt_transfer(dev, 0x81, result, 2, &nw, timeout);
+			err = libusb_interrupt_transfer(dev, 0x81, result, 20, &nw, timeout);
 			if(err) {
 				printf("read interrupt_transfer... %s\n", strerror(errno));
 				libusb_release_interface(dev, 0);
