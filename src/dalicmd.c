@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
 					libusb_exit(ctx);
 					exit(1);
 				}
-				loopcount++
+				loopcount++;
 				printf("debug: read %d bytes\n", nw);
 			}
 			printf("RESULT: %.2X %.2X\n", result[0], result[1]);
