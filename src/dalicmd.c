@@ -117,8 +117,9 @@ int main(int argc, char** argv) {
 	if(should_read){
 		while(1){
 			usleep(timeout*1000);
-			while(nw == 0){
+			while(result[0] == 0 && loopcount < 45){
 				err = libusb_interrupt_transfer(dev, 0x81, result, 20, &nw, timeout);
+				usleep(50000);
 				if(err) {
 					printf("read interrupt_transfer... %s\n", strerror(errno));
 					libusb_release_interface(dev, 0);
