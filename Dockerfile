@@ -1,4 +1,4 @@
-FROM alpine:3.15.0 AS build
+FROM alpine:3.20.0 AS build
 
 COPY repositories /etc/apk/repositories
 ADD . /src/
@@ -8,7 +8,7 @@ RUN apk update && \
     cd /src/ && \
     cmake . -DCMAKE_INSTALL_PREFIX=/usr/ && make -j24
 
-FROM alpine:3.15.0
+FROM alpine:3.20.0
 
 COPY repositories /etc/apk/repositories
 RUN apk --no-cache add libusb
